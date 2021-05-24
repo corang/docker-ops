@@ -32,7 +32,7 @@ services:
         --ntp-server=10.0.0.11
       IPA_SERVER_HOSTNAME: ipa.example.test
   ntp:
-    image: cturra/ntp:latest
+    image: atlasplatform/ntp-isolated:latest
     networks: 
       dockernet:
       xpi:

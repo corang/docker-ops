@@ -31,7 +31,7 @@ services:
         --forwarder=8.8.4.4
       IPA_SERVER_HOSTNAME: ipa.example.test
   ntp:
-    image: cturra/ntp:latest
+    image: atlasplatform/ntp-isolated:latest
     networks: 
       xpi:
         ipv4_address: 139.241.255.11
