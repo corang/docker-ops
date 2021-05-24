@@ -1,0 +1,1 @@
+Uses containerized freeipa-server (https://hub.docker.com/r/freeipa/freeipa-server) and our own flavor of containerized ntp server through chronyd. The NTP server is the single source of truth for time until we can get NTP queries out of our lan. Freeipa is our identity management system of choice.
