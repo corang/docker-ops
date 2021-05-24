@@ -1,0 +1,14 @@
+FROM cturra/ntp:latest
+
+# replace default startup script with one that allows 
+# container to sync time without other servers needed
+COPY startup.sh /opt/startup.sh
+
+# ntp port
+EXPOSE 123/udp
+
+# let docker know how to test container health
+HEALTHCHECK CMD chronyc tracking || exit 1
+
+# start chronyd in the foreground
+ENTRYPOINT [ "/bin/sh", "/opt/startup.sh" ]

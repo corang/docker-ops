@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  ipa:
+    image: freeipa/freeipa-server:centos-8
+    networks: 
+      dockernet:
+      xpi:
+        ipv4_address: 139.241.255.10
+    mac_address: ee:ee:ee:ee:ee:e0
+    hostname: ipa.example.test
+    tty: true
+    stdin_open: true
+    read_only: false
+    volumes: 
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/ipa-data:/data:Z
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 0
+    command: --unattended
+    ports: 
+      - "80:80"
+      - "443:443"
+    environment: 
+      IPA_SERVER_INSTALL_OPTS: >
+        --ds-password=example123 
+        --admin-password=example123 
+        --domain=example.test 
+        --realm=example.test 
+        --setup-dns 
+        --forwarder=8.8.8.8  
+        --forwarder=8.8.4.4
+      IPA_SERVER_HOSTNAME: ipa.example.test
+  ntp:
+    image: cturra/ntp:latest
+    networks: 
+      xpi:
+        ipv4_address: 139.241.255.11
+    dockernet:
+
+
+networks:
+  dockernet:
+  xpi:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: 139.241.255.0/24
+          gateway: 130.241.255.1
+          ip_range: 139.241.255.10/28
