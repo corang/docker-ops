@@ -47,5 +47,5 @@ networks:
     ipam:
       config:
         - subnet: 139.241.255.0/24
-          gateway: 130.241.255.1
+          gateway: 139.241.255.1
           ip_range: 139.241.255.0/28
