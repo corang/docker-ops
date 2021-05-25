@@ -7,7 +7,7 @@ services:
       xpi:
         ipv4_address: 139.241.255.10
     mac_address: ee:ee:ee:ee:ee:e0
-    hostname: ipa.example.test
+    hostname: ipa.cspts.xpi
     tty: true
     stdin_open: true
     read_only: false
@@ -21,19 +21,21 @@ services:
       IPA_SERVER_INSTALL_OPTS: >
         --ds-password=example123 
         --admin-password=example123 
-        --domain=example.test 
-        --realm=example.test 
+        --domain=cspts.xpi 
+        --realm=cspts.xpi 
         --setup-dns 
         --forwarder=8.8.8.8  
         --forwarder=8.8.4.4
         --ntp-server=139.241.255.11
-      IPA_SERVER_HOSTNAME: ipa.example.test
+      IPA_SERVER_HOSTNAME: ipa.cspts.xpi
   ntp:
     image: atlasplatform/ntp-isolated:latest
     networks: 
       dockernet:
       xpi:
         ipv4_address: 139.241.255.11
+    mac_address: ee:ee:ee:ee:ee:e1
+    hostname: ntp.cspts.xpi
 
 
 networks:
