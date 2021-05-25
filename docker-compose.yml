@@ -50,7 +50,7 @@ networks:
   xpi:
     driver: macvlan
     driver_opts:
-      parent: eth0
+      parent: enp1s0
     ipam:
       config:
         - subnet: 139.241.255.0/24
