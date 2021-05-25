@@ -4,6 +4,7 @@ services:
     image: freeipa/freeipa-server:centos-8
     networks: 
       dockernet:
+        ipv4_address: 172.18.0.10
       xpi:
         ipv4_address: 139.241.255.10
     mac_address: ee:ee:ee:ee:ee:e0
@@ -26,12 +27,13 @@ services:
         --setup-dns 
         --forwarder=8.8.8.8  
         --forwarder=8.8.4.4
-        --ntp-server=139.241.255.11
+        --ntp-server=172.18.0.11
       IPA_SERVER_HOSTNAME: ipa.cspts.xpi
   ntp:
     image: atlasplatform/ntp-isolated:latest
     networks: 
       dockernet:
+        ipv4_address: 172.18.0.11
       xpi:
         ipv4_address: 139.241.255.11
     mac_address: ee:ee:ee:ee:ee:e1
@@ -40,6 +42,11 @@ services:
 
 networks:
   dockernet:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
+          ip_range: 172.18.0.0/16
   xpi:
     driver: macvlan
     driver_opts:
