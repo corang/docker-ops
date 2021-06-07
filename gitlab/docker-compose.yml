@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  web:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    hostname: 'gitlab.cspts.xpi'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.cspts.xpi'
+        letsencrypt['enable'] = false
+        # Add any other gitlab.rb configuration here, each on its own line
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8022:22'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+    mac_address: ee:ee:ee:ee:ee:e2
+    networks: 
+      dockernet:
+      xpi:
+        ipv4_address: 10.0.1.10
+
+networks:
+  dockernet:
+  xpi:
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+          gateway: 10.0.1.1
+          ip_range: 10.0.1.0/28
