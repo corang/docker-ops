@@ -10,8 +10,8 @@ services:
         letsencrypt['enable'] = false
         # Add any other gitlab.rb configuration here, each on its own line
     ports:
-      - '80:80'
-      - '443:443'
+      - '8000:80'
+      - '8443:443'
       - '8022:22'
     volumes:
       - '/srv/gitlab/config:/etc/gitlab'
@@ -21,7 +21,7 @@ services:
     networks: 
       dockernet:
       xpi:
-        ipv4_address: 10.0.1.10
+        ipv4_address: 10.0.1.9
 
 networks:
   dockernet:
