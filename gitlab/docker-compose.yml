@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  web:
+  gitlab:
     image: 'gitlab/gitlab-ee:latest'
     restart: always
     hostname: 'gitlab.cspts.xpi'
@@ -9,6 +9,11 @@ services:
         external_url 'https://gitlab.cspts.xpi'
         letsencrypt['enable'] = false
         # Add any other gitlab.rb configuration here, each on its own line
+        'label' => 'ipa'
+        'host' => '10.0.1.10'
+        'port' => 389
+        'encryption' => 'plain'
+        'base' => 'uid=admin,cn=users,cn=accounts,dc=cspts,dc=xpi'
     ports:
       - '8000:80'
       - '8443:443'
