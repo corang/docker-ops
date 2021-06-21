@@ -4,6 +4,15 @@ FROM cturra/ntp:latest
 # container to sync time without other servers needed
 COPY startup.sh /opt/startup.sh
 
+# set timezone
+ENV TZ="America/Chicago"
+
+# add timezone tool
+RUN apk add --no-cache tzdata
+
+# check timezone
+RUN date
+
 # ntp port
 EXPOSE 123/udp
 
