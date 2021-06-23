@@ -1,2 +1,41 @@
 version: "3.8"
 services:
+  # dhcp:
+  #   image: networkboot/dhcpd:latest
+  #   volumes:
+  #     - ./data/:/data
+  #   networks: 
+  #     dockernet:
+  #     testnet:
+  #       ipv4_address: 139.241.255.87
+  tftp:
+    image: jumanjiman/tftp-hpa:latest
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 10.0.2.5
+  # http:
+  #   image: httpd:latest
+  #   networks: 
+  #     dockernet:
+  #     testnet:
+  #       ipv4_address: 10.0.2.6
+  # ansible: 
+  #   image: registry1.dso.mil/ironbank/opensource/ansible/ansible:4.0.0
+  #   networks: 
+  #     dockernet:
+  #     testnet:
+  #       ipv4_address: 10.0.2.7
+
+
+networks:
+  dockernet:
+  testnet:
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: 139.241.255.0/24
+          gateway: 139.241.255.1
+          ip_range: 139.241.255.0/24
