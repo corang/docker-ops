@@ -1,0 +1,16 @@
+FROM ubuntu:20.04
+
+RUN apt update
+
+RUN apt install ansible socat git sshpass -y
+
+RUN mkdir -p /scripts
+
+COPY ./image-files/decrypt-replace.sh       /scripts/decrypt-replace.sh
+
+COPY ./image-files/entrypoint.sh            /scripts/entrypoint.sh
+
+COPY ./image-files/password.enc             /scripts/password.enc
+
+COPY ./image-files/socat-provision.enc.sh   /scripts/socat-provision.enc.sh
+

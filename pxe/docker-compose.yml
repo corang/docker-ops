@@ -19,18 +19,18 @@ services:
   #     dockernet:
   #     testnet:
   #       ipv4_address: 139.241.255.85
-  http:
-    image: httpd:latest
-    mac_address: ee:ee:ee:ee:ee:d3
-    volumes:
-      - ./httpd/content/:/usr/local/apache2/htdocs/
-      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-    ports:
-      - 80:80
-    networks: 
-      dockernet:
-      testnet:
-        ipv4_address: 10.0.2.5
+  # http:
+  #   image: httpd:latest
+  #   mac_address: ee:ee:ee:ee:ee:d3
+  #   volumes:
+  #     - ./httpd/content/:/usr/local/apache2/htdocs/
+  #     - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+  #   ports:
+  #     - 80:80
+  #   networks: 
+  #     dockernet:
+  #     testnet:
+  #       ipv4_address: 10.0.2.5
   # ansible: 
   #   image: registry1.dso.mil/ironbank/opensource/ansible/ansible:4.0.0
   #   networks: 
