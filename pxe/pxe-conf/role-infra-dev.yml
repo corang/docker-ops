@@ -1,0 +1,57 @@
+#cloud-config
+autoinstall:
+  apt:
+    geoip: true
+    preserve_sources_list: false
+    primary:
+    - arches: [amd64, i386]
+      uri: http://us.archive.ubuntu.com/ubuntu
+    - arches: [default]
+      uri: http://ports.ubuntu.com/ubuntu-ports
+  identity: {hostname: test-laptop, password: $6$RV8J3GszJYqXycpl$ePPcz9MC7jb8VwkARdPkAxdnv377xRW/lLreSzriIsSQqWri6aVSp0YeDlhwtiCZo7MHKwXNHKBdlXCbkN9nu.,
+    realname: Administrator, username: administrator}
+  refresh-installer:
+    update: no
+  ssh:
+    allow-pw: true
+    install-server: true
+  storage:
+    config:
+    - {ptable: gpt, path: /dev/sda, preserve: false, name: '', grub_device: false, type: disk, id: ssd-1} # Create GPT partition table on first SSD
+    - {path: /dev/sdb, wipe: superblock, preserve: false, name: '', grub_device: false,
+      type: disk, id: ssd-2}                                                                              # Wipe second SSD
+    - {device: ssd-1, size: 512M, wipe: superblock, flag: boot, number: 1,
+      preserve: false, grub_device: true, type: partition, id: boot-partition}                            # Create 512MB Boot partition on first SSD
+    - {fstype: fat32, volume: boot-partition, preserve: false, type: format, id: boot-formatted}          # Format Boot partition as FAT32
+    - {device: ssd-1, size: 483183820800, wipe: superblock, flag: '', number: 2,
+      preserve: false, grub_device: false, type: partition, id: ssd-1-raid}                               # Create 450GB file system partition on first SSD
+    - name: md/SSD
+      raidlevel: raid0
+      devices: [ssd-2, ssd-1-raid]
+      spare_devices: []
+      preserve: false
+      type: raid                                                                                          # Create software RAID0 on the ssd-1-raid partition
+      id: raid-0                                                                                          # and the second SSD
+    - name: volGroup
+      devices: [raid-0]
+      preserve: false
+      type: lvm_volgroup
+      id: raid-volGroup                                                                                   # Create logical volume group on the software RAID drive
+    - {name: logVol, volgroup: raid-volGroup, size: 100%, preserve: false,
+      type: lvm_partition, id: raid-logVol}                                                               # Create logical volume on the raid-volGroup
+    - {fstype: ext4, volume: raid-logVol, preserve: false, type: format, id: raid-root-formatted}         # Format raid-logVol as ext4 for the filesystem
+    - {device: raid-root-formatted, path: /, type: mount, id: root-drive}                                 # Mount the ext4 formatted volume as the root filesystem
+    - {device: boot-formatted, path: /boot/efi, type: mount, id: boot-drive}                              # Mount the FAT32 formatted boot volume as the boot filesystem
+  packages:
+   - net-tools
+  late-commands:
+    - curtin in-target --target=/target -- grub-install                       # These commands are for a workaround for
+    - curtin in-target --target=/target -- update-initramfs -u -k $(uname -r) # ubuntu only booting to a GRUB cli
+    - curtin in-target --target=/target -- update-grub                        # instead of booting into the OS
+    - curtin in-target --target=/target -- mkdir -p /tmp
+    - curtin in-target --target=/target -- curl http://139.241.255.4/roles/infra-dev-laptop/script.sh --output /tmp/script.sh
+    - curtin in-target --target=/target -- chmod +x /tmp/script.sh
+    - curtin in-target --target=/target -- /tmp/script.sh
+  version: 1
+# Documentation link below
+# https://ubuntu.com/server/docs/install/autoinstall-reference
