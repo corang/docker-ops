@@ -2,5 +2,5 @@ pxe/ubuntu-iso
 pxe/ubuntu.iso
 pxe/tftpboot
 pxe/data/*
-!pxe/data/dhcpd.conf
+!pxe/data/dhcpd.*.conf
 pxe/httpd/

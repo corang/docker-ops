@@ -1,0 +1,20 @@
+FROM ubuntu:20.04
+
+# Update package meta-data
+RUN apt update
+
+# Grab all necessary packages for ansible provisioning
+RUN apt install ansible socat git sshpass -y
+
+# Create the scripts folder
+RUN mkdir -p /scripts
+
+# Copy the scripts from host into image
+COPY ./image-files/socat-provision.sh   /scripts/socat-provision.sh
+COPY ./image-files/startup.sh           /scripts/startup.sh
+
+# Expose the tcp port we use in socat
+EXPOSE 54321/tcp
+
+# Run the default startup script (can be overridden)
+CMD ./scripts/startup.sh

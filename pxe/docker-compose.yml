@@ -1,61 +1,53 @@
 version: "3.8"
 services:
-  # dhcp:
-  #   image: networkboot/dhcpd:latest
-  #   volumes:
-  #     - ./data/:/data
-  #   networks: 
-  #     dockernet:
-  #     testnet:
-  #       ipv4_address: 139.241.255.87
-  # tftp:
-  #   image: jumanjiman/tftp-hpa:latest
-  #   volumes:
-  #     - ./tftpboot/boot:/tftpboot/boot
-  #     - ./tftpboot/grub:/tftpboot/grub
-  #     - ./tftpboot/init:/tftpboot/init
-  #   mac_address: ee:ee:ee:ee:ee:d3
-  #   networks: 
-  #     dockernet:
-  #     testnet:
-  #       ipv4_address: 139.241.255.85
-  # http:
-  #   image: httpd:latest
-  #   mac_address: ee:ee:ee:ee:ee:d3
-  #   volumes:
-  #     - ./httpd/content/:/usr/local/apache2/htdocs/
-  #     - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-  #   ports:
-  #     - 80:80
-  #   networks: 
-  #     dockernet:
-  #     testnet:
-  #       ipv4_address: 10.0.2.5
-  # ansible: 
-  #   image: registry1.dso.mil/ironbank/opensource/ansible/ansible:4.0.0
-  #   networks: 
-  #     dockernet:
-  #     testnet:
-  #       ipv4_address: 10.0.2.7
+  dhcp:
+    image: networkboot/dhcpd:latest
+    volumes:
+      - ./data/:/data
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 192.168.0.2
+  tftp:
+    image: jumanjiman/tftp-hpa:latest
+    volumes:
+      - ./tftpboot/boot:/tftpboot/boot
+      - ./tftpboot/grub:/tftpboot/grub
+      - ./tftpboot/init:/tftpboot/init
+    mac_address: ee:ee:ee:ee:ee:d3
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 192.168.0.3
+  http:
+    image: httpd:latest
+    mac_address: ee:ee:ee:ee:ee:d3
+    volumes:
+      - ./httpd/content/:/usr/local/apache2/htdocs/
+      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    ports:
+      - 80:80
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 192.168.0.4
+  ansible: 
+    image: atlasplatform/socat-ansible:latest
+    environment:
+      SSH_PASSWORD: TODO
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 192.168.0.5
 
 networks:
   dockernet:
   testnet:
+    driver: macvlan
+    driver_opts: 
+      parent: eth1
     ipam:
       config:
-        - subnet: 10.0.2.0/24
-          gateway: 10.0.2.1
-          ip_range: 10.0.2.0/24
-
-
-# networks:
-#   dockernet:
-#   testnet:
-#     driver: macvlan
-#     driver_opts:
-#       parent: eth0
-#     ipam:
-#       config:
-#         - subnet: 139.241.255.0/24
-#           gateway: 139.241.255.1
-#           ip_range: 139.241.255.0/24
+        - subnet: 192.168.0.0/24
+          gateway: 192.168.0.1
+          ip_range: 192.168.0.0/24
