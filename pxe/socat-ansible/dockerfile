@@ -13,6 +13,10 @@ RUN mkdir -p /scripts
 COPY ./image-files/socat-provision.sh   /scripts/socat-provision.sh
 COPY ./image-files/startup.sh           /scripts/startup.sh
 
+# Make sure copied scripts have executable permissions
+RUN chmod +x /scripts/socat-provision.sh
+RUN chmod +x /scripts/startup.sh
+
 # Expose the tcp port we use in socat
 EXPOSE 54321/tcp
 

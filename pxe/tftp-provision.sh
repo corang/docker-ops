@@ -14,6 +14,8 @@ mkdir -p tftpboot/boot/uefi/pxelinux.cfg
 mkdir -p tftpboot/grub/fonts
 mkdir -p tftpboot/init
 
+chmod -R +w ./tftpboot/
+
 # Download Ubuntu 20 iso if it doesn't exist
 if [ ! -f "ubuntu.iso" ]; then
   wget https://releases.ubuntu.com/20.04/ubuntu-20.04.2-live-server-amd64.iso -q --show-progress -O ubuntu.iso
@@ -38,8 +40,8 @@ cp -p /usr/lib/syslinux/modules/bios/libcom32.c32           ./tftpboot/boot/bios
 cp -p /usr/lib/syslinux/modules/bios/libutil.c32            ./tftpboot/boot/bios/
 cp -p /usr/lib/syslinux/modules/bios/vesamenu.c32           ./tftpboot/boot/bios/
 cp -p /usr/share/grub/unicode.pf2                           ./tftpboot/grub/fonts/
-
-chmod -R +w ./tftpboot/
+cp -p ./pxe-conf/bios-pxelinux.cfg                          ./tftpboot/boot/bios/pxelinux.cfg/default
+cp -p ./pxe-conf/uefi-grub.cfg                              ./tftpboot/grub/grub.cfg
 
 # Install network boot dependencies
 PACKAGES="pxelinux shim shim-signed grub-efi-amd64-signed grub-common"
