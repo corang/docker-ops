@@ -29,6 +29,10 @@ else
   echo "Iso already mounted"
 fi
 
+# Install network boot dependencies
+PACKAGES="pxelinux shim shim-signed grub-efi-amd64-signed grub-common"
+sudo apt install -y $PACKAGES
+
 # Copy pxe dependencies to proper directory for container usage
 cp -p ./ubuntu-iso/casper/vmlinuz                           ./tftpboot/init/
 cp -p ./ubuntu-iso/casper/initrd                            ./tftpboot/init/
@@ -42,10 +46,6 @@ cp -p /usr/lib/syslinux/modules/bios/vesamenu.c32           ./tftpboot/boot/bios
 cp -p /usr/share/grub/unicode.pf2                           ./tftpboot/grub/fonts/
 cp -p ./pxe-conf/bios-pxelinux.cfg                          ./tftpboot/boot/bios/pxelinux.cfg/default
 cp -p ./pxe-conf/uefi-grub.cfg                              ./tftpboot/grub/grub.cfg
-
-# Install network boot dependencies
-PACKAGES="pxelinux shim shim-signed grub-efi-amd64-signed grub-common"
-sudo apt install -y $PACKAGES
 
 # Go back to original directory
 popd &> /dev/null
