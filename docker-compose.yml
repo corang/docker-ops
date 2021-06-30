@@ -38,6 +38,47 @@ services:
         ipv4_address: 139.241.255.11
     mac_address: ee:ee:ee:ee:ee:e1
     hostname: ntp.cspts.xpi
+  dhcp:
+    image: networkboot/dhcpd:latest
+    volumes:
+      - ./pxe/data/:/data
+    mac_address: ee:ee:ee:ee:ee:e2
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 139.241.255.2
+  tftp:
+    image: jumanjiman/tftp-hpa:latest
+    volumes:
+      - ./pxe/tftpboot/boot:/tftpboot/boot
+      - ./pxe/tftpboot/grub:/tftpboot/grub
+      - ./pxe/tftpboot/init:/tftpboot/init
+    mac_address: ee:ee:ee:ee:ee:e3
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 139.241.255.3
+  http:
+    image: httpd:latest
+    mac_address: ee:ee:ee:ee:ee:e4
+    volumes:
+      - ./pxe/httpd/content/:/usr/local/apache2/htdocs/
+      - ./pxe/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    ports:
+      - 80:80
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 139.241.255.4
+  ansible: 
+    image: atlasplatform/socat-ansible:latest
+    environment:
+      SSH_PASSWORD: TODO
+    mac_address: ee:ee:ee:ee:ee:e5
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 139.241.255.5
 
 
 networks:
