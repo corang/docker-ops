@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   ipa:
-    image: freeipa/freeipa-server:centos-8
+    image: atlasplatform/freeipa-server:latest
     networks: 
       dockernet:
         ipv4_address: 172.18.0.10
@@ -39,7 +39,7 @@ services:
     mac_address: ee:ee:ee:ee:ee:e1
     hostname: ntp.cspts.xpi
   dhcp:
-    image: networkboot/dhcpd:latest
+    image: atlasplatform/dhcp:latest
     volumes:
       - ./pxe/data/:/data
     mac_address: ee:ee:ee:ee:ee:e2
@@ -48,7 +48,7 @@ services:
       testnet:
         ipv4_address: 139.241.255.2
   tftp:
-    image: jumanjiman/tftp-hpa:latest
+    image: atlasplatform/tftp-hpa:latest
     volumes:
       - ./pxe/tftpboot/boot:/tftpboot/boot
       - ./pxe/tftpboot/grub:/tftpboot/grub
@@ -59,7 +59,7 @@ services:
       testnet:
         ipv4_address: 139.241.255.3
   http:
-    image: httpd:latest
+    image: atlasplatform/httpd:latest
     mac_address: ee:ee:ee:ee:ee:e4
     volumes:
       - ./pxe/httpd/content/:/usr/local/apache2/htdocs/

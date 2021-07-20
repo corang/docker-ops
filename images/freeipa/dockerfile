@@ -1,0 +1,7 @@
+FROM freeipa/freeipa-server:centos-8
+
+COPY ./health.sh /bin/health.sh
+
+RUN chmod +x /bin/health.sh
+
+HEALTHCHECK CMD /bin/health.sh

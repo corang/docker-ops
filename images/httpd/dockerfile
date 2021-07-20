@@ -1,0 +1,7 @@
+FROM httpd:latest
+
+RUN apt update
+
+RUN apt install curl -y
+
+HEALTHCHECK CMD curl -sI localhost/roles/generic/meta-data | grep -q "200 OK"

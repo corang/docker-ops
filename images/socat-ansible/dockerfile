@@ -20,5 +20,8 @@ RUN chmod +x /scripts/startup.sh
 # Expose the tcp port we use in socat
 EXPOSE 54321/tcp
 
+# Create the ansible healthcheck
+HEALTHCHECK CMD ansible --version || exit 1
+
 # Run the default startup script (can be overridden)
 CMD ./scripts/startup.sh
