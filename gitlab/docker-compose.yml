@@ -6,17 +6,32 @@ services:
     hostname: 'gitlab.cspts.xpi'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.cspts.xpi'
+        external_url 'http://gitlab.cspts.xpi'
         letsencrypt['enable'] = false
         # Add any other gitlab.rb configuration here, each on its own line
-        'label' => 'ipa'
-        'host' => '10.0.1.10'
-        'port' => 389
-        'encryption' => 'plain'
-        'base' => 'uid=admin,cn=users,cn=accounts,dc=cspts,dc=xpi'
+        gitlab_rails['ldap_enabled'] = true
+        gitlab_rails['prevent_ldap_sign_in'] = false
+        gitlab_rails['ldap_servers'] = {
+          'main' => {
+            'label' => 'ipa',
+            'host' => '10.0.1.10',
+            'port' => 389,
+            'uid' => 'uid',
+            'encryption' => 'plain',
+            'verify_certificates' => false,
+            'bind_dn' => 'uid=admin,cn=users,cn=accounts,dc=example,dc=test',
+            'password' => 'example123',
+            'base' => 'cn=users,cn=accounts,dc=example,dc=test',
+            'attributes' => {
+              'username' => ['uid'],
+              'name' => ['cn, displayName'],
+              'email' => ['mail']
+            }
+          }
+        }
     ports:
-      - '8000:80'
-      - '8443:443'
+      - '80:80'
+      - '443:443'
       - '8022:22'
     volumes:
       - '/srv/gitlab/config:/etc/gitlab'

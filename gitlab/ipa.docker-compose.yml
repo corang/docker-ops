@@ -18,8 +18,8 @@ services:
       net.ipv6.conf.all.disable_ipv6: 0
     command: --unattended
     ports: 
-      - "80:80"
-      - "443:443"
+      - "8000:80"
+      - "8443:443"
     environment: 
       IPA_SERVER_INSTALL_OPTS: >
         --ds-password=example123 
