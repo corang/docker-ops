@@ -48,7 +48,7 @@ services:
     mac_address: ee:ee:ee:ee:ee:e2
     networks: 
       dockernet:
-      testnet:
+      xpi:
         ipv4_address: 139.241.255.2
   tftp:
     image: atlasplatform/tftp-hpa:latest
@@ -60,7 +60,7 @@ services:
     mac_address: ee:ee:ee:ee:ee:e3
     networks: 
       dockernet:
-      testnet:
+      xpi:
         ipv4_address: 139.241.255.3
   http:
     image: atlasplatform/httpd:latest
@@ -73,7 +73,7 @@ services:
       - 80:80
     networks: 
       dockernet:
-      testnet:
+      xpi:
         ipv4_address: 139.241.255.4
   ansible: 
     image: atlasplatform/socat-ansible:latest
@@ -83,7 +83,7 @@ services:
     mac_address: ee:ee:ee:ee:ee:e5
     networks: 
       dockernet:
-      testnet:
+      xpi:
         ipv4_address: 139.241.255.5
   gitlab:
     image: 'gitlab/gitlab-ee:latest'
@@ -121,7 +121,7 @@ services:
     mac_address: ee:ee:ee:ee:ee:e6
     networks: 
       dockernet:
-      testnet:
+      xpi:
         ipv4_address: 139.241.255.8
 
 
