@@ -69,8 +69,6 @@ services:
     volumes:
       - ./pxe/httpd/content/:/usr/local/apache2/htdocs/
       - ./pxe/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-    ports:
-      - 80:80
     networks: 
       dockernet:
       xpi:
@@ -98,7 +96,7 @@ services:
         gitlab_rails['prevent_ldap_sign_in'] = false
         gitlab_rails['ldap_servers'] = {
           'main' => {
-            'label' => 'ipa',
+            'label' => 'XPI',
             'host' => '139.241.255.10',
             'port' => 389,
             'uid' => 'uid',
