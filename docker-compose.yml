@@ -2,6 +2,7 @@ version: "3.8"
 services:
   ipa:
     image: atlasplatform/freeipa-server:latest
+    restart: always
     networks: 
       dockernet:
         ipv4_address: 172.18.0.10
@@ -31,6 +32,7 @@ services:
       IPA_SERVER_HOSTNAME: ipa.cspts.xpi
   ntp:
     image: atlasplatform/ntp-isolated:latest
+    restart: always
     networks: 
       dockernet:
         ipv4_address: 172.18.0.11
@@ -40,6 +42,7 @@ services:
     hostname: ntp.cspts.xpi
   dhcp:
     image: atlasplatform/dhcp:latest
+    restart: always
     volumes:
       - ./pxe/data/:/data
     mac_address: ee:ee:ee:ee:ee:e2
@@ -49,6 +52,7 @@ services:
         ipv4_address: 139.241.255.2
   tftp:
     image: atlasplatform/tftp-hpa:latest
+    restart: always
     volumes:
       - ./pxe/tftpboot/boot:/tftpboot/boot
       - ./pxe/tftpboot/grub:/tftpboot/grub
@@ -60,6 +64,7 @@ services:
         ipv4_address: 139.241.255.3
   http:
     image: atlasplatform/httpd:latest
+    restart: always
     mac_address: ee:ee:ee:ee:ee:e4
     volumes:
       - ./pxe/httpd/content/:/usr/local/apache2/htdocs/
@@ -72,6 +77,7 @@ services:
         ipv4_address: 139.241.255.4
   ansible: 
     image: atlasplatform/socat-ansible:latest
+    restart: always
     environment:
       SSH_PASSWORD: TODO
     mac_address: ee:ee:ee:ee:ee:e5
@@ -79,6 +85,44 @@ services:
       dockernet:
       testnet:
         ipv4_address: 139.241.255.5
+  gitlab:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    hostname: 'gitlab.cspts.xpi'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.cspts.xpi'
+        letsencrypt['enable'] = false
+        # Add any other gitlab.rb configuration here, each on its own line
+        gitlab_rails['ldap_enabled'] = true
+        gitlab_rails['prevent_ldap_sign_in'] = false
+        gitlab_rails['ldap_servers'] = {
+          'main' => {
+            'label' => 'ipa',
+            'host' => '139.241.255.10',
+            'port' => 389,
+            'uid' => 'uid',
+            'encryption' => 'plain',
+            'verify_certificates' => false,
+            'bind_dn' => 'uid=admin,cn=users,cn=accounts,dc=cspts,dc=xpi',
+            'password' => 'TODO',
+            'base' => 'cn=users,cn=accounts,dc=cspts,dc=xpi',
+            'attributes' => {
+              'username' => ['uid'],
+              'name' => ['cn, displayName'],
+              'email' => ['mail']
+            }
+          }
+        }
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+    mac_address: ee:ee:ee:ee:ee:e6
+    networks: 
+      dockernet:
+      testnet:
+        ipv4_address: 139.241.255.8
 
 
 networks:
