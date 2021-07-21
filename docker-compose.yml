@@ -69,8 +69,6 @@ services:
     volumes:
       - ./pxe/httpd/content/:/usr/local/apache2/htdocs/
       - ./pxe/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-    ports:
-      - 80:80
     networks: 
       dockernet:
       xpi:
