@@ -21,6 +21,8 @@ then
     ansible-galaxy install git+https://gitlab+deploy-token-23364:sE6WnrM8acQy4qaYzYSr@gitlab.com/kraken.io/infra-dev-laptop.git \
     --roles-path "${WD}"
     logUsername="$( (grep -A1 "${clientMac}" "${WD}/infra-dev-laptop/vars/main.yml" | tail -n 1 | tr -d ' ' ; echo username:default) | head -n 1) "
+else
+    exit 1;
 fi
 
 echo "${SSH_PASSWORD}" > "${WD}/passwordfile"
