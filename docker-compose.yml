@@ -1,11 +1,13 @@
 version: "3.8"
 services:
   ipa:
+    cap_add:
+      - NET_ADMIN
     image: atlasplatform/freeipa-server:latest
     restart: always
     networks: 
-      dockernet:
-        ipv4_address: 172.18.0.10
+    #dockernet:
+    #ipv4_address: 172.18.0.10
       xpi:
         ipv4_address: 139.241.255.10
     mac_address: ee:ee:ee:ee:ee:e0
