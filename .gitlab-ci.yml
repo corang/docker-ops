@@ -19,4 +19,4 @@ docker-build:
     - docker push "atlasplatform/httpd:latest"
     - docker push "atlasplatform/ntp-isolated:latest"
     - docker push "atlasplatform/socat-ansible:latest"
-    - docker push "atlasplatform/tftp:latest"
+    - docker push "atlasplatform/tftp-hpa:latest"
