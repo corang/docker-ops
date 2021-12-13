@@ -13,7 +13,7 @@ docker-build:
     - docker build --pull -t "atlasplatform/httpd:latest"         ./httpd
     - docker build --pull -t "atlasplatform/ntp-isolated:latest"  ./ntp-isolated
     - docker build --pull -t "atlasplatform/socat-ansible:latest" ./socat-ansible
-    - docker build --pull -t "atlasplatform/tftp:latest"          ./tftp-hpa
+    - docker build --pull -t "atlasplatform/tftp-hpa:latest"      ./tftp
     - docker push "atlasplatform/dhcp:latest"
     - docker push "atlasplatform/freeipa:latest"
     - docker push "atlasplatform/httpd:latest"
