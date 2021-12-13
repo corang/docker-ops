@@ -1,0 +1,22 @@
+docker-build:
+  # Use the official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+  script:
+    - cd images
+    - docker build --pull -t "atlasplatform/dhcp:latest"          ./dhcp
+    - docker build --pull -t "atlasplatform/freeipa:latest"       ./freeipa
+    - docker build --pull -t "atlasplatform/httpd:latest"         ./httpd
+    - docker build --pull -t "atlasplatform/ntp-isolated:latest"  ./ntp-isolated
+    - docker build --pull -t "atlasplatform/socat-ansible:latest" ./socat-ansible
+    - docker build --pull -t "atlasplatform/tftp:latest"          ./tftp-hpa
+    - docker push "atlasplatform/dhcp:latest"
+    - docker push "atlasplatform/freeipa:latest"
+    - docker push "atlasplatform/httpd:latest"
+    - docker push "atlasplatform/ntp-isolated:latest"
+    - docker push "atlasplatform/socat-ansible:latest"
+    - docker push "atlasplatform/tftp:latest"
