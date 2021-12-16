@@ -17,4 +17,4 @@ Log in to IPA to make sure it's working
 `docker-compose -f ipa.docker-compose.yml -f docker-compose.yml start gitlab`
 Once IPA is running start gitlab and see if the LDAP handshake is successful
 
-ldapsearch -x -b "cn=users,cn=accounts,dc=cspts,dc=xpi" -H ldap://139.241.255.10 -D "uid=admin,cn=users,cn=accounts,dc=cspts,dc=xpi" -W
+ldapsearch -x -b "cn=users,cn=accounts,dc=cspts,dc=xpi" -H ldap://192.168.1.10 -D "uid=admin,cn=users,cn=accounts,dc=cspts,dc=xpi" -W

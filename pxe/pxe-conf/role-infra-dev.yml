@@ -49,7 +49,7 @@ autoinstall:
     - curtin in-target --target=/target -- update-initramfs -u -k $(uname -r) # ubuntu only booting to a GRUB cli
     - curtin in-target --target=/target -- update-grub                        # instead of booting into the OS
     - curtin in-target --target=/target -- mkdir -p /tmp
-    - curtin in-target --target=/target -- curl http://139.241.255.4/roles/infra-dev-laptop/script.sh --output /tmp/script.sh
+    - curtin in-target --target=/target -- curl http://192.168.1.4/roles/infra-dev-laptop/script.sh --output /tmp/script.sh
     - curtin in-target --target=/target -- chmod +x /tmp/script.sh
     - curtin in-target --target=/target -- /tmp/script.sh
   version: 1

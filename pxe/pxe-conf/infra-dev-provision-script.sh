@@ -6,7 +6,7 @@ cat >/bin/firstboot.sh <<EOL
 #!/bin/bash
 clientIP=\$(hostname -I | cut -d ' ' -f 1)
 clientMac=\$(ifconfig -a | grep ether | head -1 | tr -s ' ' | cut -d ' ' -f 3)
-echo "\${clientIP} infra-dev-laptop \${clientMac}" > "/dev/tcp/139.241.255.5/54321"
+echo "\${clientIP} infra-dev-laptop \${clientMac}" > "/dev/tcp/192.168.1.5/54321"
 logger "provisioner: \${clientIP} infra-dev-laptop sent to server"
 systemctl disable runonce
 rm -f /etc/systemd/runonce.service
