@@ -20,7 +20,7 @@ netplan apply
 echo -e "\n Restarting NetworkManager to apply network config changes" > /dev/tty1
 systemctl restart NetworkManager
 echo -e "\n Configuring NetworkManager" > /dev/tty1
-nmcli connection add type ethernet autoconnect yes ifname eth0 con-name "Office Net" 802-1x.eap "md5" 802-1x.identity admin 802-1x.password scwdadmin1
+nmcli connection add type ethernet autoconnect yes ifname eth0 con-name "Office Net" 802-1x.eap "md5" 802-1x.identity admin 802-1x.password TODO
 nmcli connection add type ethernet autoconnect yes ifname eth0 con-name "Home Net"
 nmcli connection up "Office Net" ifname eth0
 sleep 15s
