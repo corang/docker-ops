@@ -5,3 +5,4 @@ pxe/data/*
 !pxe/data/dhcpd.local.conf
 !pxe/data/dhcpd.xpi.conf
 pxe/httpd/
+pxe/networkManager.tar.gz
