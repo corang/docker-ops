@@ -48,6 +48,10 @@ cp -p ./pxe-conf/role-infra-dev.yml ./httpd/content/roles/infra-dev-laptop/user-
 cp -p ./pxe-conf/role-storage.yml ./httpd/content/roles/storage/user-data
 cp -p ./pxe-conf/infra-dev-provision-script.sh ./httpd/content/roles/infra-dev-laptop/script.sh
 
+# Edit placed infra-dev script
+read -p "Enter the RADIUS password: " RPASS
+sed --in-place "s/TODO/${RPASS}/" ./httpd/content/roles/infra-dev-laptop/script.sh
+
 # Create meta-data files for ubuntu autoinstall
 touch ./httpd/content/roles/generic/meta-data
 touch ./httpd/content/roles/infra-dev-laptop/meta-data
