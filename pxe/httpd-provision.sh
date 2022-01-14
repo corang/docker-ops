@@ -3,6 +3,9 @@
 # Safer bash script
 set -euxo pipefail
 
+# Download and install script dependencies
+sudo apt install apt-rdepends -y
+
 # If terminal is not already in pxe folder, change it so that it is during script runtime
 if ! pwd | grep -q pxe; then
     pushd ./pxe
@@ -13,11 +16,25 @@ mkdir -p httpd/content/isos
 mkdir -p httpd/content/roles/generic
 mkdir -p httpd/content/roles/infra-dev-laptop
 mkdir -p httpd/content/roles/storage
+mkdir -p httpd/content/packages
 
 # Download Ubuntu 20 iso if it doesn't exist
 if [ ! -f "ubuntu.iso" ]; then
   wget https://releases.ubuntu.com/20.04/ubuntu-20.04.2-live-server-amd64.iso -q --show-progress -O ubuntu.iso
 fi
+
+# Download and archive NetworkManager and dependencies
+if [ ! -f "networkManager.tar.gz" ]; then
+  mkdir -p nm_temp
+  pushd nm_temp
+  apt-get download $(apt-rdepends network-manager|grep -v "^ " |grep -v "^debconf-2.0$" | grep -v "^time-daemon$")
+  tar -cvzf ../networkManager.tar.gz ./
+  popd
+  rm -rf nm_temp
+fi
+
+# Copy NetworkManager archive to apache packages directory
+cp -p ./networkManager.tar.gz ./httpd/content/packages
 
 # Copy httpd conf to apache base directory
 cp -p ./pxe-conf/httpd.conf ./httpd/httpd.conf

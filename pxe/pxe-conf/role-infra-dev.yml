@@ -42,14 +42,15 @@ autoinstall:
     - {fstype: ext4, volume: raid-logVol, preserve: false, type: format, id: raid-root-formatted}         # Format raid-logVol as ext4 for the filesystem
     - {device: raid-root-formatted, path: /, type: mount, id: root-drive}                                 # Mount the ext4 formatted volume as the root filesystem
     - {device: boot-formatted, path: /boot/efi, type: mount, id: boot-drive}                              # Mount the FAT32 formatted boot volume as the boot filesystem
-  packages:
-   - net-tools
+  # packages:
+  #  - net-tools
   late-commands:
     - curtin in-target --target=/target -- grub-install                       # These commands are for a workaround for
+    - curtin in-target --target=/target -- sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"/' /etc/default/grub # Make sure network interface is named eth0
     - curtin in-target --target=/target -- update-initramfs -u -k $(uname -r) # ubuntu only booting to a GRUB cli
     - curtin in-target --target=/target -- update-grub                        # instead of booting into the OS
     - curtin in-target --target=/target -- mkdir -p /tmp
-    - curtin in-target --target=/target -- curl http://192.168.1.4/roles/infra-dev-laptop/script.sh --output /tmp/script.sh
+    - curtin in-target --target=/target -- curl http://192.168.2.4/roles/infra-dev-laptop/script.sh --output /tmp/script.sh
     - curtin in-target --target=/target -- chmod +x /tmp/script.sh
     - curtin in-target --target=/target -- /tmp/script.sh
   version: 1
