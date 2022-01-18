@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Safer bash script
-set -euxo pipefail
+set -euo pipefail
 
 # Download and install script dependencies
 sudo apt install apt-rdepends -y
@@ -49,8 +49,9 @@ cp -p ./pxe-conf/role-storage.yml ./httpd/content/roles/storage/user-data
 cp -p ./pxe-conf/infra-dev-provision-script.sh ./httpd/content/roles/infra-dev-laptop/script.sh
 
 # Edit placed infra-dev script
-read -p "Enter the RADIUS password: " RPASS
+read -s -p "Enter the RADIUS password: " RPASS
 sed --in-place "s/TODO/${RPASS}/" ./httpd/content/roles/infra-dev-laptop/script.sh
+echo
 
 # Create meta-data files for ubuntu autoinstall
 touch ./httpd/content/roles/generic/meta-data
