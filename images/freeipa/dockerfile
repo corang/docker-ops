@@ -1,4 +1,4 @@
-FROM freeipa/freeipa-server:centos-8
+FROM freeipa/freeipa-server:centos-8-stream
 
 COPY ./health.sh /bin/health.sh
 
