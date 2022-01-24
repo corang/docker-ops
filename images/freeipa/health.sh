@@ -8,7 +8,8 @@ systemctl is-active --quiet dirsrv@CSPTS-XPI
 systemctl is-active --quiet gssproxy
 systemctl is-active --quiet httpd
 systemctl is-active --quiet ipa-custodia
-systemctl is-active --quiet ipa-dnskeysyncd
+# CentOS Stream doesn't use this anymore?
+# systemctl is-active --quiet ipa-dnskeysyncd
 systemctl is-active --quiet kadmin
 systemctl is-active --quiet krb5kdc
 systemctl is-active --quiet named-pkcs11
